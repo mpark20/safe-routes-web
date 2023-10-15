@@ -8,8 +8,6 @@ import axios from 'axios';
 // import "leaflet-routing-machine";
 
 const markerIcon = L.icon({iconUrl: mapPin, iconSize: [30, 30]});
-const API_KEY = 'pk.eyJ1IjoiY2hyaXNiZWVuY2hvaSIsImEiOiJjbG5xZG81Y3YwdHFmMnRwaWw1ZGg4M25vIn0.4IXSDBWkh0dVhDQG8iSjyQ';
-const API_ENDPOINT = 'https://api.mapbox.com/search/searchbox/v1/suggest?'
 
 export default class App extends Component {
 
