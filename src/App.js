@@ -3,14 +3,13 @@ import './App.css';
 import { MapContainer, TileLayer, Popup, Marker} from 'react-leaflet'
 import * as L from "leaflet";
 import mapPin from './images/map-pin.png'
+import axios from 'axios';
 // import { createControlComponent } from "@react-leaflet/core";
 // import "leaflet-routing-machine";
 
 const markerIcon = L.icon({iconUrl: mapPin, iconSize: [30, 30]});
-// const testInputs = [
-//   {latitude: -122.3075, longitude: 47.6546},
-//   {latitude: -122.3051, longitude: 47.6595},
-// ]
+const API_KEY = 'pk.eyJ1IjoiY2hyaXNiZWVuY2hvaSIsImEiOiJjbG5xZG81Y3YwdHFmMnRwaWw1ZGg4M25vIn0.4IXSDBWkh0dVhDQG8iSjyQ';
+const API_ENDPOINT = 'https://api.mapbox.com/search/searchbox/v1/suggest?'
 
 export default class App extends Component {
 
@@ -22,7 +21,8 @@ export default class App extends Component {
       lon1: 47.6546,
       lat2: -122.3075,
       lon2: 47.6546,
-      searchInputs: []
+      searchInputs: [], // start and end coordinates
+      routeOutput: [] // will be a list of coordinates composing the route
     };
   }
 
@@ -40,43 +40,48 @@ export default class App extends Component {
       this.setState({lat2: event.target.value})
     }
   }
+  // NOT USED YET: will get route response
   handleSubmit = () => {
     const inputs = [
       {latitude: this.state.lat1, longitude: this.state.lon1},
       {latitude: this.state.lat2, longitude: this.state.lon2},
     ]
     this.setState({searchInputs: inputs})
-    console.log(inputs)
+    fetch("/navigate").then((res) =>
+      res.json().then((data) => {
+        this.setState({routeOutput: data})
+      })
+    );
   }
 
   render() {
     return (
       <>
-      <div>
-        <input id='longitude' placeholder='Longitude' type='number' onChange={(e) => this.handleLonChange(e, 1)}/>
-        <input id='longitude' placeholder='Latitude' type='number' onChange={(e) => this.handleLatChange(e, 1)}/>
+      <div className='textbox-container'>
+        <div>
+          <input id='longitude' placeholder='Longitude (Start)' type='number' onChange={(e) => this.handleLonChange(e, 1)}/>
+          <input id='longitude' placeholder='Latitude (Start)' type='number' onChange={(e) => this.handleLatChange(e, 1)}/>
+        </div>
+        <div>
+          <input id='longitude' placeholder='Longitude (End)' type='number' onChange={(e) => this.handleLonChange(e, 2)}/>
+          <input id='longitude' placeholder='Latitude (End)' type='number' onChange={(e) => this.handleLatChange(e, 2)}/>
+        </div>
+        <button onClick={this.handleSubmit} className='submit-btn'>Submit</button>
       </div>
       <div>
-        <input id='longitude' placeholder='Longitude' type='number' onChange={(e) => this.handleLonChange(e, 2)}/>
-        <input id='longitude' placeholder='Latitude' type='number' onChange={(e) => this.handleLatChange(e, 2)}/>
-      </div>
-      <button onClick={this.handleSubmit}>Submit</button>
-      
-      <div>
-          <MapContainer className='leaflet-container' center={[47.6546, -122.3075]} zoom={15} scrollWheelZoom={false}>
-          <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {this.state.searchInputs.map((point, index) => (
-            <Marker
-                key={index}
-                position={[point.longitude, point.latitude]}
-                icon={markerIcon}
-            >
-            </Marker>
-          ))}
-          </MapContainer>
+        <MapContainer className='leaflet-container' center={[47.6546, -122.3075]} zoom={15} scrollWheelZoom={true}>
+        <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {this.state.searchInputs.map((point, index) => (
+          <Marker
+              key={index}
+              position={[point.longitude, point.latitude]}
+              icon={markerIcon}>
+          </Marker>
+        ))}
+        </MapContainer>
       </div>
       </>
     );
