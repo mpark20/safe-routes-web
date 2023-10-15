@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/street-smart-web/static/css/main.79d31928.css",
+    "main.js": "/street-smart-web/static/js/main.65e34c5a.js",
+    "static/js/496.ee6c425a.chunk.js": "/street-smart-web/static/js/496.ee6c425a.chunk.js",
+    "static/media/map-pin.png": "/street-smart-web/static/media/map-pin.c29bcac79ff7f347717b.png",
+    "index.html": "/street-smart-web/index.html",
+    "main.79d31928.css.map": "/street-smart-web/static/css/main.79d31928.css.map",
+    "main.65e34c5a.js.map": "/street-smart-web/static/js/main.65e34c5a.js.map",
+    "496.ee6c425a.chunk.js.map": "/street-smart-web/static/js/496.ee6c425a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.79d31928.css",
+    "static/js/main.65e34c5a.js"
+  ]
+}
